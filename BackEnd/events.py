@@ -1,9 +1,3 @@
-# POST /events/add
-# PUT /events/edit
-# DELETE /events/delete
-# POST /events/all
-# POST /events/id
-# POST /events/filter
 from __future__ import print_function
 
 import boto3
@@ -15,7 +9,7 @@ print('Loading event service...')
 
 def handler(event, context):
 
-  path = event['requestContext']["path"]
+  path = event['requestContext']["http"]["path"]
   requestJson = json.loads(event['body'])
 
   def add_event():
@@ -23,7 +17,7 @@ def handler(event, context):
       TableName='eventTable',
       Item={
         'eventId': {
-          'S': uuid.uuid4()
+          'S': str(uuid.uuid4())
         },
         'status': {
           'S': 'OPEN'
@@ -43,8 +37,8 @@ def handler(event, context):
         'date': {
           'S': requestJson["date"]
         },
-        'tags': {
-          'L': requestJson["tags"]
+        'categories': {
+          'L': requestJson["categories"]
         },
         'name': {
           'S': requestJson["name"]
@@ -54,8 +48,8 @@ def handler(event, context):
         },
         'contactPerson': {
           'M': {
-            "telegram": {
-              'S': requestJson["contactPersonTelegram"]
+            "email": {
+              'S': requestJson["contactPersonEmail"]
             },
             "kerberosId": {
               "S": requestJson["contactPersonKerberos"]
@@ -69,26 +63,73 @@ def handler(event, context):
     )
     return dynamo_response
     
+  def add_participant():  
+    dynamo_response = client.update_item(
+      TableName='eventTable',
+      Key = {
+        "eventId": {
+            "S": requestJson["eventId"]
+        },
+      },
+      UpdateExpression="SET participants = list_append(participants, :new_participant)",
+      ExpressionAttributeValues={
+        ':new_participant': {
+          "L": [
+            {
+              "M":{
+                "name":{
+                  "S":requestJson["name"]
+                },
+                "email":{
+                  "S":requestJson["email"]
+                },
+                "kerberos":{
+                  "S":requestJson["kerberos"]
+                }
+              }
+            },
+          ]
+        }
+      },
+      ReturnValues="UPDATED_NEW"
+    )
+    return dynamo_response
+
   # def edit_event():
 
   # def delete_event():
 
-  # def get_all_events():
+  def get_all_events():
+    dynamo_response = client.scan(
+      TableName='string'
+    )
+    return dynamo_response
 
-  # def get_event_by_id():
+  def get_event_by_id():
+    dynamo_response = client.get_item(
+      TableName='eventTable',
+      Key={
+        "eventId": {
+          "S": requestJson["eventId"]
+        }
+      }
+    )
+    return dynamo_response
 
   # def get_filtered_events():
+    # date, category, OPEN/CLOSE (status), location, sizeCap
 
   execute = {
-    '/events/add': add_event
+    '/events/add': add_event,
     # '/events/edit': edit_event,
     # '/events/delete': delete_event,
-    # '/events/all': get_all_events,
-    # '/events/id': get_event_by_id,
+    '/events/all': get_all_events,
+    '/events/id': get_event_by_id,
     # '/events/filter': get_filtered_events,
+    '/events/addParticipant': add_participant
   }
 
-  data = execute[path]
+  data = execute[path]()
 
   response = {
       'statusCode': 200,
@@ -98,5 +139,5 @@ def handler(event, context):
         'Access-Control-Allow-Origin': '*'
       },
   }
-  
+
   return response
