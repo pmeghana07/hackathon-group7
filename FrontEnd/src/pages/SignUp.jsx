@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import Select from 'react-select'
 import Header from '../partials/Header';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { MultiSelect } from "react-multi-select-component";
+
+
+
+
+
 
 function SignUp() {
+  const options = [
+    { value: 'Sports', label: 'Sports' },
+    { value: 'Coffee', label: 'Coffee' },
+    { value: 'Happy Hour', label: 'Happy Hour' },
+    { value: 'Board Games', label: 'Board Games' },
+    { value: 'Nature', label: 'Nature' },
+    { value: 'Karoake', label: 'Karoake' },
+    { value: 'Movies', label: 'Movies' },
+    { value: 'Gym', label: 'Gym' },
+    { value: 'Gaming', label: 'Gaming' }
+  ]
+
+  const [value, setValue] = React.useState(new Date('2022-07-13T10:01:01'));
+  const [value1, setValue1] = React.useState(new Date('2022-07-13T10:00:00'));
+  const [value2, setValue2] = React.useState(new Date('2022-07-13T11:00:00'));
+  const [selected, setSelected] = useState([]);
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
 
@@ -19,40 +51,114 @@ function SignUp() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">Welcome. We exist to make entrepreneurism easier.</h1>
+                <h1 className="h1">Welcome! Post your new events here.</h1>
               </div>
 
               {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form>
-                  <div className="flex flex-wrap -mx-3 mb-4">
+                <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Name <span className="text-red-600">*</span></label>
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Contactor Person Name </label>
                       <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your name" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Email <span className="text-red-600">*</span></label>
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Contactor Person Kerbos </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your Kerbos" required />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Contactor Person Email </label>
                       <input id="email" type="email" className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
-                      <input id="password" type="password" className="form-input w-full text-gray-800" placeholder="Enter your password" required />
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Event Name </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your Event Name" required />
                     </div>
+                  </div>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Event Location</label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your Event Location" required />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Event Description</label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your Description" required />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Size Cap</label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your Size Cap" required />
+                    </div>
+                  </div>
+                  <div>
+                    <p> Categories </p>
+                  </div>
+                  <div>
+                    <MultiSelect
+                      options={options}
+                      value={selected}
+                      onChange={setSelected}
+                      labelledBy="Select"
+                    />
+                  </div>
+                  <br></br>
+                  <div>
+                    <p>Event Date</p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        value={value}
+                        onChange={(newValue) => {
+                          setValue(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br></br>
+                  <div>
+                    <p>Start Time</p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <TimePicker
+                        value={value1}
+                        onChange={(newValue) => {
+                          setValue1(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br></br>
+                  <div>
+                    <p>End Time</p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <TimePicker
+                        value={value2}
+                        onChange={(newValue) => {
+                          setValue2(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign up</button>
+                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Submit Event</button>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 text-center mt-3">
-                    By creating an account, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our <a className="underline" href="#0">privacy policy</a>.
+                    By creating an event, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our GS <a className="underline" href="#0">privacy policy</a>.
                                 </div>
                 </form>
-                <div className="flex items-center my-6">
+                {/* <div className="flex items-center my-6">
                   <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                   <div className="text-gray-600 italic">Or</div>
                   <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
@@ -78,10 +184,10 @@ function SignUp() {
                       </button>
                     </div>
                   </div>
-                </form>
-                <div className="text-gray-600 text-center mt-6">
+                </form> */}
+                {/* <div className="text-gray-600 text-center mt-6">
                   Already using Simple? <Link to="/signin" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>
-                </div>
+                </div> */}
               </div>
 
             </div>
