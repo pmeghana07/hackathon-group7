@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import boto3
-import json
+import simplejson as json
 import uuid
 
 client = boto3.client('dynamodb')
@@ -11,10 +11,16 @@ def handler(event, context):
 
   path = event['requestContext']["http"]["path"]
   requestJson = json.loads(event['body'])
+  TABLE_NAME = "eventTable"
+  dynamodb = boto3.resource('dynamodb', region_name="ap-southeast-1")
+  table = dynamodb.Table(TABLE_NAME)
 
   def add_event():
+    category_list = []
+    for category in requestJson["categories"]:
+      category_list.append({"S": category})
     dynamo_response = client.put_item(
-      TableName='eventTable',
+      TableName=TABLE_NAME,
       Item={
         'eventId': {
           'S': str(uuid.uuid4())
@@ -38,15 +44,18 @@ def handler(event, context):
           'S': requestJson["date"]
         },
         'categories': {
-          'L': requestJson["categories"]
+          'L': category_list
         },
-        'name': {
-          'S': requestJson["name"]
+        'event_name': {
+          'S': requestJson["event_name"]
+        },
+        'event_description': {
+          'S': requestJson["event_description"]
         },
         'sizeCap': {
           'N': requestJson["sizeCap"]
         },
-        'contactPerson': {
+        'contact_person': {
           'M': {
             "email": {
               'S': requestJson["contactPersonEmail"]
@@ -61,11 +70,11 @@ def handler(event, context):
         },
       }
     )
-    return dynamo_response
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
     
   def add_participant():  
     dynamo_response = client.update_item(
-      TableName='eventTable',
+      TableName=TABLE_NAME,
       Key = {
         "eventId": {
             "S": requestJson["eventId"]
@@ -93,31 +102,31 @@ def handler(event, context):
       },
       ReturnValues="UPDATED_NEW"
     )
-    return dynamo_response
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
 
   # def edit_event():
 
   # def delete_event():
 
   def get_all_events():
-    dynamo_response = client.scan(
-      TableName='string'
-    )
-    return dynamo_response
+    dynamo_response = table.scan()
+    print("GET_ALL")
+    print(dynamo_response)
+    return dynamo_response["Items"]
 
   def get_event_by_id():
-    dynamo_response = client.get_item(
-      TableName='eventTable',
+    dynamo_response = table.get_item(
       Key={
-        "eventId": {
-          "S": requestJson["eventId"]
-        }
+        "eventId": requestJson["eventId"]
       }
     )
-    return dynamo_response
+    print("GET_ITEM")
+    print(dynamo_response)
+    return dynamo_response["Item"]
 
-  # def get_filtered_events():
+  def get_filtered_events():
     # date, category, OPEN/CLOSE (status), location, sizeCap
+    
 
   execute = {
     '/events/add': add_event,
