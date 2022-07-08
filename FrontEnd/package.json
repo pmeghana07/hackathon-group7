@@ -7,6 +7,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.17.1.tgz",
+    "@mui/material": "^5.8.7",
     "@tailwindcss/forms": "^0.4.0",
     "aos": "^3.0.0-beta.6",
     "react": "^17.0.2",
