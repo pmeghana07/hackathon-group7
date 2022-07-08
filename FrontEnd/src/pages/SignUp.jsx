@@ -1,9 +1,118 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import Select from 'react-select'
 import Header from '../partials/Header';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { MultiSelect } from "react-multi-select-component";
+
 
 function SignUp() {
+  const options = [
+    { value: 'Sports', label: 'Sports' },
+    { value: 'Coffee', label: 'Coffee' },
+    { value: 'Happy Hour', label: 'Happy Hour' },
+    { value: 'Board Games', label: 'Board Games' },
+    { value: 'Nature', label: 'Nature' },
+    { value: 'Karoake', label: 'Karoake' },
+    { value: 'Movies', label: 'Movies' },
+    { value: 'Gym', label: 'Gym' },
+    { value: 'Gaming', label: 'Gaming' }
+  ]
+
+  const [value, setValue] = React.useState(new Date('2022-07-13T10:01:01'));
+  const [value1, setValue1] = React.useState(new Date('2022-07-13T10:00:00'));
+  const [value2, setValue2] = React.useState(new Date('2022-07-13T11:00:00'));
+  const [selected, setSelected] = useState([]);
+  const [name, setName] = React.useState("");
+  const [desc, setdesc] = React.useState("");
+  const [loca, setloca] = React.useState("");
+  const [cap, setcap] = React.useState("");
+  const [cname, setcname] = React.useState("");
+  const [email, setemail] = React.useState("");
+  const [kerb, setkerb] = React.useState("");
+
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  const onSubmit = (event) => {
+    // alert(`The name you entered was: ${value}`)
+    alert("Hello world");
+  };
+
+
+  function myFunction() {
+
+    // var cate = [];
+    // for (var i = 0; i < selected.length; i++) {
+    //   console.log(selected[i].label);
+    //   cate[i] = selected[i].label;
+    // }
+
+    // const yyyy = value.getFullYear();
+    // let mm = value.getMonth() + 1; 
+    // let dd = value.getDate();
+
+    // if (dd < 10) dd = '0' + dd;
+    // if (mm < 10) mm = '0' + mm;
+
+    // var date_formatted = dd + '-' + mm + '-' + yyyy;
+    // console.log(date_formatted);
+
+    // var start_unformatted = value1.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+    // var start_formatted = start_unformatted.substring(0,2) + start_unformatted.substring(3,5);
+    // var end_unformatted = value2.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+    // var end_formatted = end_unformatted.substring(0,2) + end_unformatted.substring(3,5);
+   
+
+  // var payload =  {
+  //     "location": "One Raffles Link",
+  //     "startTime": "1000",
+  //     "endTime": "1400",
+  //     "date": "07-07-2022",
+  //     "categories": ["Sports"],
+  //     "event_name": "Test Event",
+  //     "event_description": "Test Description",
+  //     "sizeCap": "10",
+  //     "contactPersonKerberos": "james",
+  //     "contactPersonName": "James Lee",
+  //     "contactPersonEmail": "james_lee@gs.email.com"
+  // };
+
+//   var payload =  {
+//     "location": "One Raffles Link",
+//     "startTime": "1000",
+//     "endTime": "1400",
+//     "date": "07-07-2022",
+//     "categories": ["Sports"],
+//     "event_name": "Test Event",
+//     "event_description": "Test Description",
+//     "sizeCap": "10",
+//     "contactPersonKerberos": "james",
+//     "contactPersonName": "James Lee",
+//     "contactPersonEmail": "james_lee@gs.email.com"
+// };
+
+//   console.log(payload);
+//   alert("Hello World"); 
+
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(payload)
+//   };
+
+//   fetch('/events/add', requestOptions)
+//       .then(response => response.json())
+//       .then(data => console.log(data))
+//       // .then(data => this.setState({ postId: data.id }));
+}
+  
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
 
@@ -16,43 +125,130 @@ function SignUp() {
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
+              <div>
+                <div className="text-1xl md:text-2xl font-extrabold leading-tighter tracking-tighter mb-4">
+                    {/* <Link to="calendar"><h2>&#x2190; Back to calendar view</h2> </Link> */}
+                    <a href = "./calendar"><h2>&#x2190; Back to calendar view</h2> </a>
+                </div>
+              </div>
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">Welcome. We exist to make entrepreneurism easier.</h1>
+                <h1 className="h1">Welcome! Post your new events here.</h1>
               </div>
 
               {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form>
-                  <div className="flex flex-wrap -mx-3 mb-4">
+                <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">Name <span className="text-red-600">*</span></label>
-                      <input id="name" type="text" className="form-input w-full text-gray-800" placeholder="Enter your name" required />
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Event Name <span className="text-red-600">*</span></label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={name} onChange={e => setName(e.target.value)} placeholder="Enter your Event Name" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Email <span className="text-red-600">*</span></label>
-                      <input id="email" type="email" className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Event Description </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={desc} onChange={e => setdesc(e.target.value)} placeholder="Enter your Description" max="500" />
                     </div>
                   </div>
+                  <div>
+                    <p>Event Date<span className="text-red-600">*</span></p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        value={value}
+                        onChange={(newValue) => {
+                          setValue(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br></br>
+                  <div>
+                    <p>Start Time<span className="text-red-600">*</span></p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <TimePicker
+                        value={value1}
+                        onChange={(newValue) => {
+                          setValue1(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br></br>
+                  <div>
+                    <p>End Time<span className="text-red-600">*</span></p>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <TimePicker
+                        value={value2}
+                        onChange={(newValue) => {
+                          setValue2(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br></br>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
-                      <input id="password" type="password" className="form-input w-full text-gray-800" placeholder="Enter your password" required />
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Event Location<span className="text-red-600">*</span></label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={loca} onChange={e => setloca(e.target.value)}  placeholder="Enter your Event Location" required />
                     </div>
                   </div>
+                  <div>
+                    <p> Categories<span className="text-red-600">*</span> </p>
+                  </div>
+                  <div>
+                    <MultiSelect
+                      options={options}
+                      value={selected}
+                      onChange={setSelected}
+                      labelledBy="Select"
+                    />
+                  </div>
+                  <br></br>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Size Cap<span className="text-red-600">*</span></label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={cap} onChange={e => setcap(e.target.value)}  placeholder="Enter your Size Cap" required />
+                    </div>
+                  </div>
+                  
+                <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Contactor Person Name<span className="text-red-600">*</span> </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={cname} onChange={e => setcname(e.target.value)} placeholder="Enter your name" required />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Contactor Person Kerbos<span className="text-red-600">*</span> </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={kerb} onChange={e => setkerb(e.target.value)} placeholder="Enter your kerbos" required />
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="email">Contactor Person Email<span className="text-red-600">*</span> </label>
+                      <input id="email" type="email" className="form-input w-full text-gray-800" value={email} onChange={e => setemail(e.target.value)} placeholder="Enter your email address" required />
+                    </div>
+                  </div>
+                  
+                  <br></br>
+                  
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign up</button>
+                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"  onClick={myFunction}>Submit Event</button>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 text-center mt-3">
-                    By creating an account, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our <a className="underline" href="#0">privacy policy</a>.
+                    By creating an event, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our GS <a className="underline" href="#0">privacy policy</a>.
                                 </div>
                 </form>
-                <div className="flex items-center my-6">
+                {/* <div className="flex items-center my-6">
                   <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                   <div className="text-gray-600 italic">Or</div>
                   <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
@@ -78,10 +274,10 @@ function SignUp() {
                       </button>
                     </div>
                   </div>
-                </form>
-                <div className="text-gray-600 text-center mt-6">
+                </form> */}
+                {/* <div className="text-gray-600 text-center mt-6">
                   Already using Simple? <Link to="/signin" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>
-                </div>
+                </div> */}
               </div>
 
             </div>
