@@ -49,21 +49,12 @@ function HeroHome() {
                     <Link to="calendar" className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0">Explore events</Link>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>
 
-          {/* Hero image */}
           <div>
-
-            {/* Modal */}
-            <Modal id="modal" ariaLabel="modal-headline" show={videoModalOpen} handleClose={() => setVideoModalOpen(false)}>
-              <div className="relative pb-9/16">
-                <iframe className="absolute w-full h-full" src="https://player.vimeo.com/video/174002812" title="Video" allowFullScreen></iframe>
-              </div>
-            </Modal>
-
+            <List input={inputText} />
           </div>
 
         </div>
