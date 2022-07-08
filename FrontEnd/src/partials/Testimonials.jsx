@@ -94,7 +94,7 @@ function Testimonials() {
                 </blockquote>
                 <cite className="block font-bold text-lg not-italic mb-1">Harper Soonx</cite>
                 <div className="text-gray-600">
-                  <span>Hackathon Group 7</span> <a className="text-blue-600 hover:underline" href="#0">@GS</a>
+                  <span>Hackathon Group 7 @Goldman Sachs</span>
                 </div>
               </div>
 
