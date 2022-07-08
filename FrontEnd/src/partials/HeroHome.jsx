@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import Modal from '../utils/Modal';
 import { Link } from 'react-router-dom';
-
-import HeroImage from '../images/hero-image.png';
-import OutDoorImage from "../images/outdoor.png";
+import TextField from "@mui/material/TextField";
 
 function HeroHome() {
 
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-
+  const [inputText, setInputText] = useState("");
+  let inputHandler = (e) => {
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
   return (
     <section className="relative">
 
@@ -40,9 +42,14 @@ function HeroHome() {
             <div className="max-w-3xl mx-auto">
               <p className="text-xl text-gray-600 mb-8" data-aos="zoom-y-out" data-aos-delay="150">Let's Meet is a platform for you to meet new people and do activities together! Simply create a new event or join events organised by your fellow colleagues!</p>
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="zoom-y-out" data-aos-delay="300">
-                <div>
+                <div className="search"> <TextField id="outlined-basic"   variant="outlined"  fullWidth  label="Search" />
+                  <br></br>
+                  <br></br>
+                  <div>
                     <Link to="calendar" className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0">Explore events</Link>
+                  </div>
                 </div>
+                
               </div>
             </div>
           </div>
