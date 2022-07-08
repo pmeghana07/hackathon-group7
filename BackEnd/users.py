@@ -1,7 +1,9 @@
 # POST /users/preferences/update
 # POST /users/id
+# POST /users/preferences
 # POST /users/recommendations/update
 # POST /users/add
+# POST /users/history/update
 
 from __future__ import print_function
 
@@ -16,10 +18,13 @@ def handler(users, context):
 
   path = users['requestContext']["http"]["path"]
   requestJson = json.loads(users['body'])
+  TABLE_NAME = "usersTable"
+  dynamodb = boto3.resource('dynamodb', region_name="ap-southeast-1")
+  table = dynamodb.Table(TABLE_NAME)
   
   def add_user():
     dynamo_response = client.put_item(
-      TableName='usersTable',
+      TableName= TABLE_NAME,
       Item={
         'kerberos': {
           'S': requestJson["kerberos"]
@@ -56,14 +61,80 @@ def handler(users, context):
     
           }
     )
-    return dynamo_response
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
 
+  def get_user_by_preferences():
+    dynamo_response = client.get_item(
+      TableName=  TABLE_NAME,
+      Key={
+        "preferences": {
+          "S": requestJson["preferences"]
+        }
+      }
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+
+  def get_user_by_id():
+    dynamo_response = client.get_item(
+      TableName=  TABLE_NAME,
+      Key={
+        "kerberos": {
+          "S": requestJson["kerberos"]
+        }
+      }
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+  
+  def update_preferences():
+    dynamo_response = client.update_item(
+      TableName=TABLE_NAME,
+      Key = {
+        "kerberos": {
+            "S": requestJson["kerberos"]
+        },
+      },
+      UpdateExpression="SET preferences = list_append(perferences, :new_preference)",
+      ExpressionAttributeValues={
+        ':new_preference': {
+          "L": [
+            { 
+              "S": requestJson["perferences"]
+        }
+          ]
+        }
+      },
+      ReturnValues="UPDATED_NEW"
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+  
+  def update_recommendations():
+    dynamo_response = client.update_item(
+      TableName=TABLE_NAME,
+      Key = {
+        "kerberos": {
+            "S": requestJson["kerberos"]
+        },
+      },
+      UpdateExpression="SET preferences = list_append(recommendations :new_recommendations)",
+      ExpressionAttributeValues={
+        ':new_recommendations': {
+          "L": [
+            { 
+              "N": requestJson["recommendations"]
+        }
+          ]
+        }
+      },
+      ReturnValues="UPDATED_NEW"
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+    
   execute = {
     '/users/add': add_user,
-    #'/users/all': get_all_users,
-    #'/users/id': get_user_by_id,
-    #'/users/preferences/update': update_preferences
-    #'/users/recommendations/update': update_references
+    '/users/preferences': get_user_by_preferences,
+    '/users/id': get_user_by_id,
+    '/users/preferences/update': update_preferences,
+    '/users/recommendations/update': update_recommendations
 
   }
 
