@@ -129,6 +129,28 @@ def handler(users, context):
     )
     return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
     
+  def update_history():
+    dynamo_response = client.update_item(
+      TableName=TABLE_NAME,
+      Key = {
+        "kerberos": {
+            "S": requestJson["kerberos"]
+        },
+      },
+      UpdateExpression="SET preferences = list_append(history :new_history)",
+      ExpressionAttributeValues={
+        ':new_history': {
+          "L": [
+            { 
+              "N": requestJson["history"]
+        }
+          ]
+        }
+      },
+      ReturnValues="UPDATED_NEW"
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+    
   execute = {
     '/users/add': add_user,
     '/users/preferences': get_user_by_preferences,

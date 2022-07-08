@@ -124,8 +124,9 @@ def handler(event, context):
     print(dynamo_response)
     return dynamo_response["Item"]
 
-  # def get_filtered_events():
+  def get_filtered_events():
     # date, category, OPEN/CLOSE (status), location, sizeCap
+    
 
   execute = {
     '/events/add': add_event,
