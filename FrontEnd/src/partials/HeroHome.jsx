@@ -5,12 +5,16 @@ import TextField from "@mui/material/TextField";
 
 function HeroHome() {
 
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [inputText, setInputText] = useState("");
-  let inputHandler = (e) => {
-    var lowerCase = e.target.value.toLowerCase();
-    setInputText(lowerCase);
+  const [value, setValue] = useState("");
+  const onChange = (event) => {
+    setValue(event.target.value);
   };
+  const onSearch = (searchTerm) => {
+    setValue(searchTerm);
+    // our api to fetch the search result
+    console.log("search ", searchTerm);
+  };
+
   return (
     <section className="relative">
 
@@ -42,7 +46,8 @@ function HeroHome() {
             <div className="max-w-3xl mx-auto">
               <p className="text-xl text-gray-600 mb-8" data-aos="zoom-y-out" data-aos-delay="150">Let's Meet is a platform for you to meet new people and do activities together! Simply create a new event or join events organised by your fellow colleagues!</p>
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="zoom-y-out" data-aos-delay="300">
-                <div className="search"> <TextField id="outlined-basic"   variant="outlined"  fullWidth  label="Search" />
+              <div className="search-inner">
+                <input type="text" value={value} onChange={onChange} />                   <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-12 mb-2 sm:w-3 sm:mb-4" onClick={() => onSearch(value)}> Search </button>
                   <br></br>
                   <br></br>
                   <div>
@@ -50,10 +55,10 @@ function HeroHome() {
                   </div>
                 </div>
               </div>
+              </div>   
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 }
