@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function HeroHome() {
     const [value, setValue] = useState("");
 
-    const allOptions = ["Badminton", "Board games", "Indoors"];
+    const allOptions = ["Badminton", "Board games", "Indoors", "Happy Hour", "Movies","Sports", "Outdoors","Coffee","Gaming","Backyard"];
     const [options, setOptions] = useState(allOptions.slice(0, 10));
 
     const onChange = (event) => {
