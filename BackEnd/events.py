@@ -3,6 +3,7 @@ from __future__ import print_function
 import boto3
 import simplejson as json
 import uuid
+from datetime import datetime
 
 client = boto3.client('dynamodb')
 print('Loading event service...')
@@ -72,6 +73,20 @@ def handler(event, context):
     )
     return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
     
+  def send_sns(message, event_name):
+    sns_client = boto3.client('sns')
+    sns_client.publish(TopicArn = 'arn:aws:sns:ap-southeast-1:491240003285:email_topic', Message = message, Subject = 'Registration for '+ event_name)
+  
+  def get_event_by_event_id(id):
+    dynamo_response = table.get_item(
+      Key={
+        "eventId": id
+      }
+    )
+    print("GET_ITEM")
+    print(dynamo_response)
+    return dynamo_response["Item"]
+  
   def add_participant():  
     dynamo_response = client.update_item(
       TableName=TABLE_NAME,
@@ -102,6 +117,26 @@ def handler(event, context):
       },
       ReturnValues="UPDATED_NEW"
     )
+    eventId = requestJson["eventId"]
+    eventJson = get_event_by_event_id(eventId)
+    event_name = eventJson["event_name"]
+    date = eventJson["date"]
+    startTime = eventJson["startTime"]
+    endTime = eventJson["endTime"]
+    startHour = str(startTime / 100)
+    startMinute = str(startTime % 100)
+    endHour = str(endTime / 100)
+    endMinute = str(endTime % 100)
+    if endMinute == "0":
+      endMinute = "00"
+    if startMinute == "0":
+      startMinute = "00"
+    location = eventJson["location"]
+    #d = datetime.strptime("10:30", "%H:%M")
+    
+    message = "You have registered \"" + event_name + "\" session \nLocation: " + location  + "\nStart time: " + startHour + ":" + startMinute + "\nEnd time: " + endHour + ":" + endMinute + ":\nDate: "  + date
+    send_sns(message, event_name)
+    print("send sns successfully")
     return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
 
   # def edit_event():
@@ -124,17 +159,27 @@ def handler(event, context):
     print(dynamo_response)
     return dynamo_response["Item"]
 
-  def get_filtered_events():
+  # def get_filtered_events():
     # date, category, OPEN/CLOSE (status), location, sizeCap
-    
 
+  # execute = {
+  #   '/events/add': add_event,
+  #   # '/events/edit': edit_event,
+  #   # '/events/delete': delete_event,
+  #   '/events/all': get_all_events,
+  #   '/events/id': get_event_by_id,
+  #   # '/events/filter': get_filtered_events,
+  #   '/events/addParticipant': add_participant
+  # }
+  
   execute = {
+    '/dev/events/add': add_event,
     '/events/add': add_event,
-    # '/events/edit': edit_event,
-    # '/events/delete': delete_event,
     '/events/all': get_all_events,
     '/events/id': get_event_by_id,
-    # '/events/filter': get_filtered_events,
+    '/dev/events/all': get_all_events,
+    '/dev/events/id': get_event_by_id,
+    '/dev/events/addParticipant': add_participant,
     '/events/addParticipant': add_participant
   }
 
@@ -145,8 +190,12 @@ def handler(event, context):
       'body': json.dumps(data),
       'headers': {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT,DELETE',
+        "Access-Control-Allow-Headers" : "Content-Type"
+      }
   }
 
   return response
+  
+  

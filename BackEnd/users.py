@@ -1,14 +1,14 @@
-# POST /users/preferences/update
-# POST /users/id
-# POST /users/preferences
+# POST /users/preferences/update 1
+# POST /users/id 1
+# POST /users/preferences 1
 # POST /users/recommendations/update
-# POST /users/add
+# POST /users/add 1
 # POST /users/history/update
 
 from __future__ import print_function
 
 import boto3
-import json
+import simplejson as json
 import uuid
 
 client = boto3.client('dynamodb')
@@ -62,28 +62,27 @@ def handler(users, context):
           }
     )
     return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
-
+  #get kerborse by input string preference
   def get_user_by_preferences():
-    dynamo_response = client.get_item(
-      TableName=  TABLE_NAME,
-      Key={
-        "preferences": {
-          "S": requestJson["preferences"]
-        }
-      }
-    )
-    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+    preference_from_request = requestJson["preferences"]
+    dynamo_response = table.scan()
+    user_pref = []
+    user_arr = dynamo_response["Items"]
+    for user in user_arr:
+      #print(user["kerberos"])
+      print(user)
+      if preference_from_request in user["preferences"]:
+        user_pref.append(user["kerberos"])
+    return json.dumps(user_pref) 
 
   def get_user_by_id():
-    dynamo_response = client.get_item(
-      TableName=  TABLE_NAME,
+    dynamo_response = table.get_item(
       Key={
-        "kerberos": {
-          "S": requestJson["kerberos"]
-        }
+        "kerberos": requestJson["kerberos"]
       }
     )
-    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+    print(dynamo_response["Item"])
+    return dynamo_response["Item"]
   
   def update_preferences():
     dynamo_response = client.update_item(
@@ -93,12 +92,12 @@ def handler(users, context):
             "S": requestJson["kerberos"]
         },
       },
-      UpdateExpression="SET preferences = list_append(perferences, :new_preference)",
+      UpdateExpression="SET preferences = list_append(preferences, :new_preference)",
       ExpressionAttributeValues={
         ':new_preference': {
           "L": [
             { 
-              "S": requestJson["perferences"]
+              "S": requestJson["preferences"]
         }
           ]
         }
@@ -115,7 +114,7 @@ def handler(users, context):
             "S": requestJson["kerberos"]
         },
       },
-      UpdateExpression="SET preferences = list_append(recommendations :new_recommendations)",
+      UpdateExpression="SET recommendations = list_append(recommendations, :new_recommendations)",
       ExpressionAttributeValues={
         ':new_recommendations': {
           "L": [
@@ -129,6 +128,20 @@ def handler(users, context):
     )
     return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
     
+  def remove_recommendations():
+    update_expression = "REMOVE recommendations[" + requestJson["index"] + "]"
+    dynamo_response = client.update_item(
+      TableName=TABLE_NAME,
+      Key = {
+        "kerberos": {
+            "S": requestJson["kerberos"]
+        },
+      },
+      UpdateExpression=update_expression,
+      ReturnValues="UPDATED_NEW"
+    )
+    return dynamo_response["ResponseMetadata"]["HTTPStatusCode"]
+    
   def update_history():
     dynamo_response = client.update_item(
       TableName=TABLE_NAME,
@@ -137,12 +150,12 @@ def handler(users, context):
             "S": requestJson["kerberos"]
         },
       },
-      UpdateExpression="SET preferences = list_append(history :new_history)",
+      UpdateExpression="SET history = list_append(history, :new_history)",
       ExpressionAttributeValues={
         ':new_history': {
           "L": [
             { 
-              "N": requestJson["history"]
+              "N": requestJson["eventId"]
         }
           ]
         }
@@ -156,8 +169,9 @@ def handler(users, context):
     '/users/preferences': get_user_by_preferences,
     '/users/id': get_user_by_id,
     '/users/preferences/update': update_preferences,
-    '/users/recommendations/update': update_recommendations
-
+    '/users/recommendations/update': update_recommendations,
+    '/users/history/update' : update_history,
+    '/users/recommendations/remove': remove_recommendations
   }
 
   data = execute[path]()
