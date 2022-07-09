@@ -49,6 +49,11 @@ $purple: rgb(188,179,214);
 .MuiChip-root{
     margin: 0px 10px 10px 0px;
 }
+
+.icon {
+    width: 50px;
+    height: 50px;
+}
 // AOS styles
 $aos-distance: 10px;
 @import 'node_modules/aos/src/sass/aos.scss';
