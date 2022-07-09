@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import ResetPassword from './pages/ResetPassword';
 import Calendar from './pages/Calendar';
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );

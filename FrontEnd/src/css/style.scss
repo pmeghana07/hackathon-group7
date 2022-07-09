@@ -28,6 +28,9 @@ $lightblue: rgb(192,222,235);
 $green: rgb(179,200,162);
 $yellow: rgb(251,205,171);
 $purple: rgb(188,179,214);
+html {
+    overflow-y: scroll;
+}
 
 .mbsc-calendar{
     margin-top: 80px;
@@ -60,6 +63,9 @@ $purple: rgb(188,179,214);
     height: 30px !important;
 }
 
+.MuiContainer-root{
+    margin-top: 80px;
+}
 // AOS styles
 $aos-distance: 10px;
 @import 'node_modules/aos/src/sass/aos.scss';
