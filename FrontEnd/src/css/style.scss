@@ -23,6 +23,10 @@
     display: none;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 .mbsc-calendar{
     margin-top: 80px;
 }
