@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Select from 'react-select'
-import Header from '../partials/Header';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { MultiSelect } from "react-multi-select-component";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import SuggestEventHeader from '../partials/SuggestEventHeader';
 
 
 function SignUp() {
@@ -117,7 +117,7 @@ function SignUp() {
     <div className="flex flex-col min-h-screen overflow-hidden">
 
       {/*  Site header */}
-      <Header />
+      <SuggestEventHeader />
 
       {/*  Page content */}
       <main className="flex-grow">
@@ -125,12 +125,13 @@ function SignUp() {
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-              <div>
-                <div className="text-1xl md:text-2xl font-extrabold leading-tighter tracking-tighter mb-4">
-                    {/* <Link to="calendar"><h2>&#x2190; Back to calendar view</h2> </Link> */}
-                    <a href = "./calendar"><h2>&#x2190; Back to calendar view</h2> </a>
-                </div>
-              </div>
+            <ul className='back-icon'>
+              <li>
+                <Link to="/">
+                  <ChevronLeftIcon className='back-icon'/>             
+                </Link>
+              </li>
+            </ul>
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
