@@ -45,11 +45,6 @@ function Features() {
 
             {/* Content */}
             <div className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6 md:mt-6" data-aos="fade-right">
-              <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
-                <h3 className="h3 mb-3">Many Categories to Choose</h3>
-                {/* <p className="text-xl text-gray-600">As more and more people return back the office as the COVID-19 pandemic becomes a part of life and restrictions start to ease, many GS Employees often find it difficult to mingle with people outside their teams and have difficulty in organizing casual sessions with their colleagues. This is rather unfortunate as networking is a huge part of the GS culture. Let's Meet is the platform to help with this issue. </p> */}
-                <p className="text-xl text-gray-600">Let's Meet is a place that you can meet friends with the same interest! Explore different kinds of events and find the one you most interested in!</p>
-              </div>
               {/* Tabs buttons */}
               <div className="mb-8 md:mb-0">
                 <a

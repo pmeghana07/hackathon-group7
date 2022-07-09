@@ -106,6 +106,23 @@ html {
     transform: translateZ(0);
 }
 
+.search-inner {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 45px; //to change to fit directly below input
+    left: 0;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.dropdown-row {
+    background-color: white;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgb(193, 193, 193);
+}
+
 // Custom AOS animations
 [data-aos="zoom-y-out"] {
   transform: scaleX(1.03);
