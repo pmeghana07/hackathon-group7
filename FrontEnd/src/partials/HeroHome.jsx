@@ -52,13 +52,7 @@ function HeroHome() {
               </div>
             </div>
           </div>
-
-          <div>
-            <List input={inputText} />
-          </div>
-
         </div>
-
       </div>
     </section>
   );
