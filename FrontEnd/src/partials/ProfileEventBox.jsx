@@ -82,7 +82,7 @@ function ProfileEventBox(props) {
   }
 
   return (
-    <Paper elevation={2} sx={{px:4, py:2.5, mb:3 }}>
+    <Paper elevation={7} sx={{px:4, py:2.5, mb:3}}>
       <List>
         <Grid container direction="row">
           <Grid item xs={8} md={8} sx={{mb:2}}>

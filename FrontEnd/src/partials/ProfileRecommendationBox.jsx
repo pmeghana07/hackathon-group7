@@ -4,6 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupIcon from '@mui/icons-material/Group';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileRecommendationBox(props) {
   const [categories, setCategories] = useState([]);
@@ -18,6 +19,7 @@ function ProfileRecommendationBox(props) {
   const [startTime, setStartTime] = useState("")
   const [status, setStatus] = useState("")
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  let navigate = useNavigate();
 
   const fetchEventData = async function(id) {
     const response = await fetch("https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/dev/events/id", {
@@ -29,6 +31,52 @@ function ProfileRecommendationBox(props) {
     });
     
     return response;
+  }
+
+
+  const handleRegister = () => {
+    console.log("Registering...");
+    // 1. Update User History
+    fetch(`https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/history/update`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId: props.eventId,
+        kerberos: props.kerberos 
+      })
+    })
+      .then((response) => console.log(response));
+    // 2. Update Event Participants
+    fetch(`https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/dev/events/addParticipant`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId: props.eventId,
+        kerberos: props.kerberos,
+        email: props.email,
+        name: props.name
+      })
+    })
+      .then((response) => console.log(response));
+    // 3. Update User Recommendations
+    fetch(`https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/recommendations/remove`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        index: props.index.toString(),
+        kerberos: props.kerberos
+      })
+    })
+      .then((response) => console.log(response));
+    // 4. Redirect to Different Page
+    navigate("/profile");
+    document.location.reload();
   }
 
   useEffect(() => {
@@ -81,7 +129,7 @@ function ProfileRecommendationBox(props) {
   }
 
   return (
-    <Paper elevation={2} sx={{px:4, py:2.5, mb:3}}>
+    <Paper elevation={7} sx={{px:4, py:2.5, mb:3}}>
       <List>
         <Grid container direction="row">
           <Grid item xs={8} md={8} sx={{mb:2}}>
@@ -118,7 +166,10 @@ function ProfileRecommendationBox(props) {
         <Typography variant="body1" sx={{my:1.5}}>{eventDescription}</Typography>
       </List>
       <Grid container justifyContent="flex-end" sx={{mb:1}}>
-        <Button variant="outlined" color="success">
+        <Button variant="outlined" color="error" sx={{mr: 2}}>
+          Not Interested
+        </Button>
+        <Button variant="outlined" color="success" onClick={handleRegister}>
           Register
         </Button>
       </Grid>
