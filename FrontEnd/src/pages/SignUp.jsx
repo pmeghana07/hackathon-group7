@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Select from 'react-select'
-import Header from '../partials/Header';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { MultiSelect } from "react-multi-select-component";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import SuggestEventHeader from '../partials/SuggestEventHeader';
 
 
 function SignUp() {
@@ -33,6 +33,7 @@ function SignUp() {
   const [cap, setcap] = React.useState("");
   const [cname, setcname] = React.useState("");
   const [email, setemail] = React.useState("");
+  const [kerb, setkerb] = React.useState("");
 
 
   const handleChange = (newValue) => {
@@ -47,32 +48,76 @@ function SignUp() {
 
   function myFunction() {
 
-    for (var i = 0; i < selected.length; i++) {
-      console.log(selected[i].label);
-    }
-    
-    console.log(email);
-    console.log(name);
-    console.log(value);
-    console.log(value1);
-    console.log(value2);
-    console.log(desc);
-    console.log(name);
-    console.log(value1);
-    console.log(cname);
-    console.log(loca);
-    console.log(cap);
-    alert("Hello World");
-  }
-  
+    // var cate = [];
+    // for (var i = 0; i < selected.length; i++) {
+    //   console.log(selected[i].label);
+    //   cate[i] = selected[i].label;
+    // }
 
-  
+    // const yyyy = value.getFullYear();
+    // let mm = value.getMonth() + 1; 
+    // let dd = value.getDate();
 
+    // if (dd < 10) dd = '0' + dd;
+    // if (mm < 10) mm = '0' + mm;
+
+    // var date_formatted = dd + '-' + mm + '-' + yyyy;
+    // console.log(date_formatted);
+
+    // var start_unformatted = value1.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+    // var start_formatted = start_unformatted.substring(0,2) + start_unformatted.substring(3,5);
+    // var end_unformatted = value2.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+    // var end_formatted = end_unformatted.substring(0,2) + end_unformatted.substring(3,5);
+   
+
+  // var payload =  {
+  //     "location": "One Raffles Link",
+  //     "startTime": "1000",
+  //     "endTime": "1400",
+  //     "date": "07-07-2022",
+  //     "categories": ["Sports"],
+  //     "event_name": "Test Event",
+  //     "event_description": "Test Description",
+  //     "sizeCap": "10",
+  //     "contactPersonKerberos": "james",
+  //     "contactPersonName": "James Lee",
+  //     "contactPersonEmail": "james_lee@gs.email.com"
+  // };
+
+//   var payload =  {
+//     "location": "One Raffles Link",
+//     "startTime": "1000",
+//     "endTime": "1400",
+//     "date": "07-07-2022",
+//     "categories": ["Sports"],
+//     "event_name": "Test Event",
+//     "event_description": "Test Description",
+//     "sizeCap": "10",
+//     "contactPersonKerberos": "james",
+//     "contactPersonName": "James Lee",
+//     "contactPersonEmail": "james_lee@gs.email.com"
+// };
+
+//   console.log(payload);
+//   alert("Hello World"); 
+
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(payload)
+//   };
+
+//   fetch('/events/add', requestOptions)
+//       .then(response => response.json())
+//       .then(data => console.log(data))
+//       // .then(data => this.setState({ postId: data.id }));
+}
+  
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
 
       {/*  Site header */}
-      <Header />
+      <SuggestEventHeader />
 
       {/*  Page content */}
       <main className="flex-grow">
@@ -80,12 +125,13 @@ function SignUp() {
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-              <div>
-                <div className="text-1xl md:text-2xl font-extrabold leading-tighter tracking-tighter mb-4">
-                    {/* <Link to="calendar"><h2>&#x2190; Back to calendar view</h2> </Link> */}
-                    <a href = "./calendar"><h2>&#x2190; Back to calendar view</h2> </a>
-                </div>
-              </div>
+            <ul className='back-icon'>
+              <li>
+                <Link to="/">
+                  <ChevronLeftIcon className='back-icon'/>             
+                </Link>
+              </li>
+            </ul>
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
@@ -178,6 +224,13 @@ function SignUp() {
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Contactor Person Name<span className="text-red-600">*</span> </label>
                       <input id="name" type="text" className="form-input w-full text-gray-800" value={cname} onChange={e => setcname(e.target.value)} placeholder="Enter your name" required />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Contactor Person Kerbos<span className="text-red-600">*</span> </label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={kerb} onChange={e => setkerb(e.target.value)} placeholder="Enter your kerbos" required />
                     </div>
                   </div>
                   
