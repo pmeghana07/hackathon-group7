@@ -75,7 +75,7 @@ function ProfileRecommendationBox(props) {
     })
       .then((response) => console.log(response));
     // 4. Redirect to Different Page
-    navigate("/profile");
+    navigate("/calendar");
     document.location.reload();
   }
 

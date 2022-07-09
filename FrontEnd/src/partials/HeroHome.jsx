@@ -103,7 +103,7 @@ function HeroHome() {
                                         onChange={onChange}
                                     />
                                     <button
-                                        className="btn text-white bg-blue-600 hover:bg-blue-700 w-12 mb-2 sm:w-3 sm:mb-4"
+                                        className="btn text-white bg-blue-600 hover:bg-blue-700 w-12 h-11 mb-2 sm:w-3 sm:mb-4 ml-3"
                                         onClick={() => onSearch(value)}
                                     >
                                         Search
