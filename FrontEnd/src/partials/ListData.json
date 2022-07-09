@@ -1,29 +1,23 @@
 [{
-    "id": 1,
     "text": "Badminton"
 }, 
 {
-    "id": 2,
     "text": "Board games"
 }, {
-    "id": 3,
     "text": "Indoors"
 }, {
-    "id": 4,
     "text": "Happy Hour"
 }, {
-    "id": 5,
     "text": "Movies"
 }, {
-    "id": 6,
     "text": "Sports"
 }, {
-    "id": 7,
     "text": "Outdoors"
 }, {
-    "id": 8,
     "text": "Coffee"
 }, {
-    "id": 9,
     "text": "Gaming"
+},
+{
+    "text":"Backyard"
 }] 
