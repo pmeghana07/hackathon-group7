@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { Eventcalendar, toast } from "@mobiscroll/react";
 import Header from "../partials/Header";
-import { Grid } from "@mui/material/";
+import { Grid, Button } from "@mui/material/";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
@@ -15,436 +15,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 function Calendar() {
   const [currentEvent, setCurrentEvent] = React.useState();
   const [backendEvents, setBackendEvent] = React.useState();
-  // const backendEvent = [
-  //   {
-  //     eventId: "2",
-  //     categories: ["Sports", "Badminton", "Pairs"],
-  //     contact_person: {
-  //       email: "liam@gs.com",
-  //       kerberos: "liam",
-  //       name: "Liam Tan",
-  //     },
-  //     date: "23-07-2022",
-  //     endTime: 1400,
-  //     event_description:
-  //       "Lets play badminton together at National stadium. Rackets will not be provided!",
-  //     event_name: "Badminton together!",
-  //     location: "National Stadium",
-  //     participants: [
-  //       {
-  //         email: "noah@gs.com",
-  //         kerberos: "noah",
-  //         name: "Noah Lim",
-  //       },
-  //       {
-  //         email: "liam@gmail.com",
-  //         kerberos: "liam",
-  //         name: "Liam Tan",
-  //       },
-  //     ],
-  //     sizeCap: 8,
-  //     startTime: 1000,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "1",
-  //     categories: ["Coffee", "Hangout"],
-  //     contact_person: {
-  //       email: "oliver@gs.com",
-  //       kerberos: "oliver",
-  //       name: "Oliver Jean",
-  //     },
-  //     date: "15-08-2022",
-  //     endTime: 1130,
-  //     event_description: "Lets get coffee and chill",
-  //     event_name: "Looking for people to have some coffee with ",
-  //     location: "Atlas Coffee House",
-  //     participants: [
-  //       {
-  //         email: "oliver@gs.com",
-  //         kerberos: "oliver",
-  //         name: "Oliver Jean",
-  //       },
-  //       {
-  //         email: "elijah@gmail.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "james@gmail.com",
-  //         kerberos: "james",
-  //         name: "James Hill",
-  //       },
-  //       {
-  //         email: "noah@gmail.com",
-  //         kerberos: "noah",
-  //         name: "Noah Lim",
-  //       },
-  //     ],
-  //     sizeCap: 6,
-  //     startTime: 1000,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "8",
-  //     categories: ["Karaoke ", "Singing", "Indoors", "Aircon"],
-  //     contact_person: {
-  //       email: "william@gs.com",
-  //       kerberos: "william",
-  //       name: "William Ang",
-  //     },
-  //     date: "06-08-2022",
-  //     endTime: 2330,
-  //     event_description:
-  //       "Since karaokes just opened up, would love to go back and sing my heart out! do join me if you want to sing as well!",
-  //     event_name: "Sing your hearts out",
-  //     location: "Teo Heng JCube",
-  //     participants: [
-  //       {
-  //         email: "sophia@gmail.com",
-  //         kerberos: "sophia",
-  //         name: "Sophia Liu",
-  //       },
-  //       {
-  //         email: "william@gmail.com",
-  //         kerberos: "william",
-  //         name: "William Ang",
-  //       },
-  //       {
-  //         email: "oliver@gmail.com",
-  //         kerberos: "oliver",
-  //         name: "Oliver Jean",
-  //       },
-  //       {
-  //         email: "isabella@gmail.com",
-  //         kerberos: "isabella",
-  //         name: "Isabella Yang",
-  //       },
-  //       {
-  //         email: "mia@gmail.com",
-  //         kerberos: "mia",
-  //         name: "Mia Kall",
-  //       },
-  //     ],
-  //     sizeCap: 5,
-  //     startTime: 2000,
-  //     status: "CLOSED",
-  //   },
-  //   {
-  //     eventId: "4",
-  //     categories: ["Board Games", "Competition"],
-  //     contact_person: {
-  //       email: "elijah@gs.com",
-  //       kerberos: "elijah",
-  //       name: "Elijah Town",
-  //     },
-  //     date: "01-07-2022",
-  //     endTime: 2100,
-  //     event_description:
-  //       "Anyone is able to join! Lets play board games! CodeNames is a must!",
-  //     event_name: "Board Games Night",
-  //     location: "Mind Cafe",
-  //     participants: [
-  //       {
-  //         email: "evelyn@gs.com",
-  //         kerberos: "evelyn",
-  //         name: "Evelyn Yong",
-  //       },
-  //       {
-  //         email: "harper@gmail.com",
-  //         kerberos: "harper",
-  //         name: "Harper Soon",
-  //       },
-  //       {
-  //         email: "elijah@gmail.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //     ],
-  //     sizeCap: 5,
-  //     startTime: 1900,
-  //     status: "CLOSED",
-  //   },
-  //   {
-  //     eventId: "9",
-  //     categories: ["Gaming", "Competition", "Indoors"],
-  //     contact_person: {
-  //       email: "isabella@gs.com",
-  //       kerberos: "isabella",
-  //       name: "Isabella Yang",
-  //     },
-  //     date: "17-08-2022",
-  //     endTime: 1800,
-  //     event_description: "Lets have a battle in League together!",
-  //     event_name: "League of Legends",
-  //     location: "Big O gaming cafe",
-  //     participants: [
-  //       {
-  //         email: "isabella@gmail.com",
-  //         kerberos: "isabella",
-  //         name: "Isabella Yang",
-  //       },
-  //       {
-  //         email: "evelyn@gmail.com",
-  //         kerberos: "evelyn",
-  //         name: "Evelyn Yong",
-  //       },
-  //       {
-  //         email: "harper@gmail.com",
-  //         kerberos: "harper",
-  //         name: "Harper Soon",
-  //       },
-  //     ],
-  //     sizeCap: 10,
-  //     startTime: 1300,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "6",
-  //     categories: ["Movies", "Comics", "Popcorn", "Indoors", "Aircon"],
-  //     contact_person: {
-  //       email: "ava@gs.com",
-  //       kerberos: "ava",
-  //       name: "Ava Fong",
-  //     },
-  //     date: "20-07-2022",
-  //     endTime: 2300,
-  //     event_description:
-  //       "MARVEL ENTHUSIASTS! Lets watch Thor: Love and Thunder over the weekend!",
-  //     event_name: "Thor: Love and Thunder!",
-  //     location: "Shaw House",
-  //     participants: [
-  //       {
-  //         email: "oliver@gmail.com",
-  //         kerberos: "oliver",
-  //         name: "Oliver Jean",
-  //       },
-  //       {
-  //         email: "ava@gmail.com",
-  //         kerberos: "ava",
-  //         name: "Ava Fong",
-  //       },
-  //     ],
-  //     sizeCap: 4,
-  //     startTime: 2000,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "7",
-  //     categories: ["Gym", "Exercise", "Healthy living"],
-  //     contact_person: {
-  //       email: "sophia@gs.com",
-  //       kerberos: "sophia",
-  //       name: "Sophia Liu",
-  //     },
-  //     date: "06-08-2022",
-  //     endTime: 2300,
-  //     event_description:
-  //       "I am slowly getting back into my exercise routine and I am looking for people to work out with! ",
-  //     event_name: "Lets be workout buddies",
-  //     location: "AnytimeFitness",
-  //     participants: [
-  //       {
-  //         email: "sophia@gmail.com",
-  //         kerberos: "sophia",
-  //         name: "Sophia Liu",
-  //       },
-  //       {
-  //         email: "oliver@gmail.com",
-  //         kerberos: "oliver",
-  //         name: "Oliver Jean",
-  //       },
-  //       {
-  //         email: "ava@gmail.com",
-  //         kerberos: "ava",
-  //         name: "Ava Fong",
-  //       },
-  //     ],
-  //     sizeCap: 4,
-  //     startTime: 2100,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "3",
-  //     categories: ["Happy Hour", "Drinks", "Bar"],
-  //     contact_person: {
-  //       email: "oliver@gs.com",
-  //       kerberos: "oliver",
-  //       name: "Oliver Jean",
-  //     },
-  //     date: "20-08-2022",
-  //     endTime: 2200,
-  //     event_description:
-  //       "Feeling generous and want to meet people! Join me in getting drinks :)",
-  //     event_name: "Drinks on me everyone",
-  //     location: "Tipsy Tavern",
-  //     participants: [
-  //       {
-  //         email: "oliver@gs.com",
-  //         kerberos: "oliver",
-  //         name: "Oliver Jean",
-  //       },
-  //       {
-  //         email: "mia@gmail.com",
-  //         kerberos: "mia",
-  //         name: "Mia Kall",
-  //       },
-  //     ],
-  //     sizeCap: 12,
-  //     startTime: 1900,
-  //     status: "OPEN",
-  //   },
-  //   {
-  //     eventId: "10",
-  //     categories: ["Happy Hour", "Drinks", "Roof top"],
-  //     contact_person: {
-  //       email: "mia@gs.com",
-  //       kerberos: "mia",
-  //       name: "Mia Kall",
-  //     },
-  //     date: "29-07-2022",
-  //     endTime: 2200,
-  //     event_description:
-  //       "Been a while since i had drinks so lets go get some and have a good time!",
-  //     event_name: "Lets grab a drink and have fun!",
-  //     location: "Graffiti Sky Bar",
-  //     participants: [
-  //       {
-  //         email: "mia@gmail.com",
-  //         kerberos: "mia",
-  //         name: "Mia Kall",
-  //       },
-  //       {
-  //         email: "liam@gmail.com",
-  //         kerberos: "liam",
-  //         name: "Liam Tan",
-  //       },
-  //       {
-  //         email: "william@gmail.com",
-  //         kerberos: "william",
-  //         name: "William Ang",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //       {
-  //         email: "elijah@gs.com",
-  //         kerberos: "elijah",
-  //         name: "Elijah Town",
-  //       },
-  //     ],
-  //     sizeCap: 10,
-  //     startTime: 1900,
-  //     status: "OPEN",
-  //   },
-  // ];
+  const [registered, setRegistered] = React.useState(false);
+  const [user, setUser] = React.useState();
 
   useEffect(() => {
     const getEvents = async () => {
@@ -466,7 +38,27 @@ function Calendar() {
       }
     };
 
+    const getUser = async () => {
+      const response = await fetch(
+        "https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ kerberos: "fengqi" }),
+        }
+      );
+      var user;
+      if (response.status == 200) {
+        response.json().then((data) => {
+          setUser(data);
+        });
+      }
+    };
+
     getEvents();
+    getUser();
   }, []);
 
   const onEventClick = (event) => {
@@ -477,6 +69,43 @@ function Calendar() {
         }
       }
     }
+  };
+
+  const handleRegister = async () => {
+    console.log("Registering...");
+
+    // // 1. Update User History
+    // fetch(
+    //   `https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/history/update`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       eventId: currentEvent.eventId,
+    //       kerberos: user.kerberos,
+    //     }),
+    //   }
+    // ).then((response) => console.log(response));
+    // // 2. Update Event Participants
+    // fetch(
+    //   `https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/events/addParticipant`,
+    //   {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       eventId: currentEvent.eventId,
+    //       kerberos: user.kerberos,
+    //       email: user.email,
+    //       name: user.name,
+    //     }),
+    //   }
+    // ).then((response) => console.log(response));
+
+    setRegistered(true);
   };
 
   const view = React.useMemo(() => {
@@ -623,6 +252,25 @@ function Calendar() {
                     </p>
                   </Grid>
                 </Grid>
+
+                {!registered && (
+                  <Button
+                    variant="outlined"
+                    onClick={handleRegister}
+                    className="register-button"
+                  >
+                    Register
+                  </Button>
+                )}
+
+                {registered && (
+                  <Button
+                  variant="outlined"
+                  disabled
+                >
+                  Registered
+                </Button>
+                )}
               </div>
             )}
             {!currentEvent && (
