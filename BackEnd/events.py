@@ -69,7 +69,7 @@ def handler(event, context):
             "email": {
               'S': requestJson["contactPersonEmail"]
             },
-            "kerberosId": {
+            "kerberos": {
               "S": requestJson["contactPersonKerberos"]
             },
             "name": {

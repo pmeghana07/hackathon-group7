@@ -51,7 +51,7 @@ def handler(event, context):
             "telegram": {
               'S': requestJson["contactPersonTelegram"]
             },
-            "kerberosId": {
+            "kerberos": {
               "S": requestJson["contactPersonKerberos"]
             },
             "name": {
