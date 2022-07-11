@@ -128,7 +128,7 @@ function SignUp() {
               <div>
                 <div className="text-1xl md:text-xl font-bold leading-tighter tracking-tighter mb-10">
                     {/* <Link to="calendar"><h2>&#x2190; Back to calendar view</h2> </Link> */}
-                    <a href = "./calendar"><h2>&#x2190; View scheduled meet-ups</h2> </a>
+                    <a href = "./calendar"><h2>&#x2190; View all meet-ups</h2> </a>
                 </div>
               </div>
 
