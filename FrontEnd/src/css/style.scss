@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=fallback');
+
+@tailwind base;
+@tailwind components;
+
+// Additional styles
+@import 'additional-styles/utility-patterns.scss';
+@import 'additional-styles/range-slider.scss';
+@import 'additional-styles/toggle-switch.scss';
+@import 'additional-styles/theme.scss';
+
+@tailwind utilities;
+
+// Additional Tailwind directives: https://tailwindcss.com/docs/functions-and-directives/#responsive
+@layer utilities {
+    .rtl {
+        direction: rtl;
+    }
+}
+
+// See Alpine.js: https://github.com/alpinejs/alpine#x-cloak
+[x-cloak] {
+    display: none;
+}
+
+$gsblue: rgb(128,181,218);
+$lightblue: rgb(192,222,235);
+$green: rgb(179,200,162);
+$yellow: rgb(251,205,171);
+$purple: rgb(188,179,214);
+html {
+    overflow-y: scroll;
+}
+
+.mbsc-calendar{
+    margin-top: 80px;
+    margin-left: 30px;
+    border: 1px solid rgb(234, 234, 234);
+}
+.event{
+    margin: 80px 10px 0px 10px;
+}
+.MuiGrid-container{
+    margin: 10px 0px 10px 0px;
+}
+
+.MuiChip-root{
+    margin: 0px 10px 10px 0px;
+    background-color: $yellow !important;
+}
+
+.MuiChip-root{
+    margin: 0px 10px 10px 0px;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+.back-icon{
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.MuiContainer-root{
+    margin-top: 80px;
+}
+
+.register-button{
+    background-color: $gsblue;
+}
+// AOS styles
+$aos-distance: 10px;
+@import 'node_modules/aos/src/sass/aos.scss';
