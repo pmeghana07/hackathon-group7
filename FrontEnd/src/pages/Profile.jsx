@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import PropTypes from 'prop-types';
 import Header from "../partials/Header";
-import { Grid, Avatar, List, Typography, Container, Card, Divider, Box, Tabs, Tab, Button } from "@mui/material/";
+import { Grid, Avatar, List, Typography, Container, Card, Divider, Box, Tabs, Tab, Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material/";
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ProfileEventBox from "../partials/ProfileEventBox";
@@ -63,6 +63,7 @@ function Profile() {
   const [value, setValue] = useState(0);
   const [editPreferencesStyle, setEditPreferencesStyle] = useState("")
   const [open, setOpen] = useState(false);
+  const [newPreference, setNewPreference] = useState("")
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -76,6 +77,22 @@ function Profile() {
     setOpen(false);
   };
 
+  const handleCloseAdd = () => {
+    setOpen(false);
+    fetch("https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/preferences/update", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({kerberos: "fengqi", preferences: newPreference })
+    })
+    let newPrefList = preferences
+    newPrefList.push(newPreference)
+    setNewPreference("")
+    setPreferences(newPrefList)
+    document.location.reload();
+  };
+
   const fetchUserData = async function() {
     const response = await fetch("https://0zbxttznx2.execute-api.ap-southeast-1.amazonaws.com/users/id", {
       method: "POST",
@@ -84,9 +101,46 @@ function Profile() {
       },
       body: JSON.stringify({kerberos: kerberos})
     });
-    
     return response;
   }
+
+  const fetchEventsData = async function() {
+    const response = await fetch("https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/events/all", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({})
+    });
+    return response;
+  }
+
+  const updateNewPreference = (e) => {
+    setNewPreference(e.target.value);
+  }
+
+  useEffect(()=>{
+    var newRecommendations = []
+    fetchEventsData().then(resp => {
+      if (resp.status == 200) {
+        resp.json().then(data => {
+          data.forEach(event => {
+            preferences.forEach(pref => {
+              if (event.categories.includes(pref) && !history.includes(event.eventId)) {
+                console.log("YO");
+                console.log(event.eventId)
+                newRecommendations.push(event.eventId);
+              }
+            })
+          })
+        })
+        setRecommendations(newRecommendations);
+        console.log(recommendations);
+      } else {
+        setRecommendations(["8", "9"])
+      }
+    })
+  },[preferences])
 
   useEffect(() => {
     fetchUserData().then(resp => {
@@ -97,9 +151,8 @@ function Profile() {
           setHistory(data.history.map(String));
           let locationString = data.location.office_location + ", " + data.location.country
           setLocation(locationString);
-          setPreferences(data.preferences.join(", "));
-          console.log(data);
-          setRecommendations(data.recommendations.map(String));
+          setPreferences(data.preferences);
+          // setRecommendations(data.recommendations.map(String));
           setTeam(data.team);
           setProfileImg("https://media-exp1.licdn.com/dms/image/C4E03AQGdLZwoz6ZuxA/profile-displayphoto-shrink_200_200/0/1652711783188?e=1659571200&v=beta&t=n6BUNC3wmN_atY6Klmds8D_ZZ4uZdimJbbjQSO6aaJg")
         })
@@ -109,7 +162,7 @@ function Profile() {
         setHistory(["4"]);
         setLocation("Mapletree Anson, Singapore");
         setPreferences(["Karaoke", "Gaming"]);
-        setRecommendations(["8", "9"]);
+        // setRecommendations(["8", "9"]);
         setTeam("Digital Assets");
         setProfileImg("https://media-exp1.licdn.com/dms/image/C4E03AQGdLZwoz6ZuxA/profile-displayphoto-shrink_200_200/0/1652711783188?e=1659571200&v=beta&t=n6BUNC3wmN_atY6Klmds8D_ZZ4uZdimJbbjQSO6aaJg")
       }
@@ -157,7 +210,7 @@ function Profile() {
                 }}
               >
                 <FavoriteIcon sx={{mr:1}}/>
-                <Typography variant="subtitle1">{preferences}</Typography>
+                <Typography variant="subtitle1">{preferences.join(", ")}</Typography>
                 <EditIcon
                   sx={{ml:1, display:editPreferencesStyle}}
                   fontSize="small"
@@ -201,6 +254,11 @@ function Profile() {
           <DialogContentText>
             Update your interests and preferences to receive tailored meetup recommendations
           </DialogContentText>
+          <FormGroup>
+            {preferences.map((preference) => (
+              <FormControlLabel control={<Checkbox defaultChecked />} label={preference} />
+            ))}
+          </FormGroup>
           <TextField
             autoFocus
             margin="dense"
@@ -209,11 +267,13 @@ function Profile() {
             type="email"
             fullWidth
             variant="standard"
+            onChange={updateNewPreference}
+            value={newPreference}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Add Interests</Button>
+          <Button onClick={handleCloseAdd}>Add Interests</Button>
         </DialogActions>
       </Dialog>
     </div>
