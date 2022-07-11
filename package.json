@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "react-dropdown": "^1.10.0"
+    "react-dropdown": "^1.10.0",
+    "talkjs": "^0.15.5"
   }
 }

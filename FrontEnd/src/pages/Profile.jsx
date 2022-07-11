@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import PropTypes from 'prop-types';
 import Header from "../partials/Header";
-import { Grid,Avatar, List, Typography, Container, Card, Divider, Box, Tabs, Tab, Button } from "@mui/material/";
+import { Grid, Avatar, List, Typography, Container, Card, Divider, Box, Tabs, Tab, Button } from "@mui/material/";
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ProfileEventBox from "../partials/ProfileEventBox";

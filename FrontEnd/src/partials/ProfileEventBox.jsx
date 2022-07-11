@@ -4,6 +4,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupIcon from '@mui/icons-material/Group';
+import { useNavigate } from 'react-router-dom';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 function ProfileEventBox(props) {
   const [categories, setCategories] = useState([]);
@@ -18,6 +20,7 @@ function ProfileEventBox(props) {
   const [startTime, setStartTime] = useState("")
   const [status, setStatus] = useState("")
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  let navigate = useNavigate();
 
   const fetchEventData = async function(id) {
     const response = await fetch("https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/dev/events/id", {
@@ -31,12 +34,15 @@ function ProfileEventBox(props) {
     return response;
   }
 
+  const navigateToChat = () => {
+    navigate("/chat/" + props.eventId);
+  }
+
   useEffect(() => {
     fetchEventData(props.eventId).then(resp => {
       if (resp.status == 200) {
         resp.json().then(data => {
           setCategories(data.categories);
-          console.log(data.contact_person)
           setContactPerson(data.contact_person);
           setDate(data.date);
           setEndTime(data.endTime.toString());
@@ -113,12 +119,16 @@ function ProfileEventBox(props) {
         <Divider sx={{my:2}}/>
         <Grid container direction="row">
           {categories.map(category => (
-            <Chip color="primary" label={category} sx={{mr:1}} variant="outlined"/>
+            <Chip color="primary" label={category} sx={{mr:1, fontWeight:"bold"}} key={category}/>
           ))}
         </Grid>
         <Typography variant="body1" sx={{my:1.5}}>{eventDescription}</Typography>
       </List>
       <Grid container justifyContent="flex-end" sx={{mb:1}}>
+        <Button variant="outlined" color="primary" sx={{mr:2}} onClick={navigateToChat}>
+          Group Chat
+          <ChatBubbleOutlineIcon sx={{ml:1}}/>
+        </Button>
         <Button variant="outlined" color="warning">
           Amend Registration
         </Button>
