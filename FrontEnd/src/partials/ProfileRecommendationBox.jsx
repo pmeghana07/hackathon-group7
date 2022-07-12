@@ -160,7 +160,7 @@ function ProfileRecommendationBox(props) {
         <Divider sx={{my:2}}/>
         <Grid container direction="row">
           {categories.map(category => (
-            <Chip color="primary" label={category} sx={{mr:1}} variant="outlined"/>
+            <Chip color="primary" label={category} sx={{mr:1, fontWeight:"bold"}} key={category}/>
           ))}
         </Grid>
         <Typography variant="body1" sx={{my:1.5}}>{eventDescription}</Typography>

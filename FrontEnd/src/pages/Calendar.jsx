@@ -66,6 +66,7 @@ function Calendar() {
       for (var i = 0; i < backendEvents.length; i++) {
         if (backendEvents[i].eventId === event.event.id) {
           setCurrentEvent(backendEvents[i]);
+          console.log(backendEvents[i])
         }
       }
     }
@@ -253,7 +254,7 @@ function Calendar() {
                   </Grid>
                 </Grid>
 
-                {!registered && (
+                {(!registered && currentEvent.contact_person.kerberosId != "fengqi") && (
                   <Button
                     variant="outlined"
                     onClick={handleRegister}
@@ -263,7 +264,7 @@ function Calendar() {
                   </Button>
                 )}
 
-                {registered && (
+                {(registered || currentEvent.contact_person.kerberosId == "fengqi") && (
                   <Button
                   variant="outlined"
                   disabled

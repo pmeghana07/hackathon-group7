@@ -92,9 +92,9 @@ function Testimonials() {
                 <blockquote className="text-xl font-medium mb-4">
                   “ I love this website cause it helps me connect with people! It helped me meet like-minded people who I can do different activities with. Highly reccomended. “
                 </blockquote>
-                <cite className="block font-bold text-lg not-italic mb-1">Harper Soonx</cite>
+                <cite className="block font-bold text-lg not-italic mb-1">Harper Soon</cite>
                 <div className="text-gray-600">
-                  <span>Hackathon Group 7 @Goldman Sachs</span>
+                  <span>Associate, GMD</span>
                 </div>
               </div>
 

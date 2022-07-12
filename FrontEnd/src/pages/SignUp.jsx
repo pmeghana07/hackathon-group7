@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select'
 import Header from '../partials/Header';
 import TextField from '@mui/material/TextField';
@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { MultiSelect } from "react-multi-select-component";
+import { Button } from '@mui/material';
 
 
 function SignUp() {
@@ -34,7 +35,7 @@ function SignUp() {
   const [cname, setcname] = React.useState("Feng Qingyu");
   const [email, setemail] = React.useState("louisfqy@gmail.com");
   const [kerb, setkerb] = React.useState("fengqi");
-
+  let navigate = useNavigate();
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -45,8 +46,19 @@ function SignUp() {
     alert("Hello world");
   };
 
+  const postEventData = async function(payload) {
+    const response = await fetch("https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/dev/events/add", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    return response;
+  }
 
-  function myFunction() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     var cate = [];
     for (var i = 0; i < selected.length; i++) {
@@ -68,50 +80,37 @@ function SignUp() {
     var start_formatted = start_unformatted.substring(0,2) + start_unformatted.substring(3,5);
     var end_unformatted = value2.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
     var end_formatted = end_unformatted.substring(0,2) + end_unformatted.substring(3,5);
-   
 
-  var payload =  {
-      "location": loca,
-      "startTime": start_formatted,
-      "endTime": end_formatted,
-      "date": date_formatted,
-      "categories": cate,
-      "event_name": name,
-      "event_description": desc,
-      "sizeCap": cap,
-      "contactPersonKerberos": kerb,
-      "contactPersonName": cname,
-      "contactPersonEmail": email
-  };
 
-//   var payload =  {
-//     "location": "One Raffles Link",
-//     "startTime": "1000",
-//     "endTime": "1400",
-//     "date": "07-07-2022",
-//     "categories": ["Sports"],
-//     "event_name": "Test Event",
-//     "event_description": "Test Description",
-//     "sizeCap": "10",
-//     "contactPersonKerberos": "james",
-//     "contactPersonName": "James Lee",
-//     "contactPersonEmail": "james_lee@gs.email.com"
-// };
+    var payload =  {
+        "location": loca,
+        "startTime": start_formatted,
+        "endTime": end_formatted,
+        "date": date_formatted,
+        "categories": cate,
+        "event_name": name,
+        "event_description": desc,
+        "sizeCap": cap,
+        "contactPersonKerberos": kerb,
+        "contactPersonName": cname,
+        "contactPersonEmail": email,
+        "participants": [
+          {
+            "email": "fengqi",
+            "kerberos": "louisfqy@gmail.com",
+            "name": "Feng Qingyu"
+          }
+        ]
+    };
 
-//   console.log(payload);
-//   alert("Hello World"); 
+    console.log(payload);
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  };
+    postEventData(payload).then(resp => {
+      console.log(resp);
+    })
 
-  fetch('https://28cqp5gdqf.execute-api.ap-southeast-1.amazonaws.com/dev/events/add', requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
-      // .then(data => this.setState({ postId: data.id }));
-}
+    navigate("/calendar");
+  }
   
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -125,13 +124,6 @@ function SignUp() {
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-12 pb-12 md:mt-20 md:mb-20">
-              <div>
-                <div className="text-1xl md:text-xl font-bold leading-tighter tracking-tighter mb-10">
-                    {/* <Link to="calendar"><h2>&#x2190; Back to calendar view</h2> </Link> */}
-                    <a href = "./calendar"><h2>&#x2190; View all meet-ups</h2> </a>
-                </div>
-              </div>
-
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-12">
                 <h2 className="h2">Good times await. Plan a meetup now!</h2>
@@ -241,11 +233,11 @@ function SignUp() {
                   
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"  onClick={myFunction}>Submit Event</button>
+                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"  onClick={handleSubmit}>Submit Event</button>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 text-center mt-3">
-                    By creating an event, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our GS <a className="underline" href="#0">privacy policy</a>.
+                    By creating a meetup, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our GS <a className="underline" href="#0">privacy policy</a>.
                                 </div>
                 </form>
                 {/* <div className="flex items-center my-6">
