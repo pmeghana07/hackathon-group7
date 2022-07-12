@@ -14,7 +14,7 @@ function FeaturesBlocks() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h2 className="h2 mb-4">Find Existing Events</h2>
-            <p className="text-xl text-gray-600">See some upcoming events in GS! Title of the events, time and venue are shown.</p>
+            <p className="text-xl text-gray-600">Here are some upcoming meet-ups near you</p>
           </div>
 
           {/* Items */}
