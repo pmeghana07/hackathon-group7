@@ -198,13 +198,15 @@ function SignUp() {
                       value={selected}
                       onChange={setSelected}
                       labelledBy="Select"
+                      isCreatable={true}
+                      hasSelectAll={false}
                     />
                   </div>
                   <br></br>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Size Cap<span className="text-red-600">*</span></label>
-                      <input id="name" type="text" className="form-input w-full text-gray-800" value={cap} onChange={e => setcap(e.target.value)}  placeholder="Enter your Size Cap" required />
+                      <label className="block text-gray-800 text-bg font-medium mb-1" htmlFor="name">Max Participants<span className="text-red-600">*</span></label>
+                      <input id="name" type="text" className="form-input w-full text-gray-800" value={cap} onChange={e => setcap(e.target.value)}  placeholder="Enter your group size limit" required />
                     </div>
                   </div>
                   
